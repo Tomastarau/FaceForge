@@ -17,6 +17,33 @@ RATIO_FIELD = {
     "face_length":  "face_length_ratio",
 }
 
+SLIDER_META = {
+    "eye_spacing": {
+        "label": "Écartement des yeux",
+        "description": "Distance entre les coins internes des deux yeux, rapportée à la largeur totale entre coins externes. Un slider élevé signifie des yeux très espacés.",
+    },
+    "nose_width": {
+        "label": "Largeur du nez",
+        "description": "Largeur des ailes du nez rapportée à la largeur oculaire. Mesurée aux points les plus externes des narines.",
+    },
+    "nose_length": {
+        "label": "Longueur du nez",
+        "description": "Distance entre la racine du nez (entre les yeux) et sa pointe, normalisée par la largeur oculaire.",
+    },
+    "mouth_width": {
+        "label": "Largeur de la bouche",
+        "description": "Distance entre les deux commissures des lèvres, rapportée à la largeur oculaire.",
+    },
+    "jaw_width": {
+        "label": "Largeur de la mâchoire",
+        "description": "Largeur du bas du visage au niveau de la mâchoire, normalisée par la largeur oculaire. Reflète la carrure du visage.",
+    },
+    "face_length": {
+        "label": "Hauteur du menton",
+        "description": "Hauteur totale du visage du haut du front jusqu'au menton, normalisée par la largeur oculaire. Correspond au slider hauteur du menton dans DD2.",
+    },
+}
+
 _calibration: dict | None = None
 
 
@@ -28,9 +55,9 @@ def _load_calibration() -> dict:
     return _calibration
 
 
-def map_to_sliders(ratios: FacialRatios) -> dict:
+def map_to_sliders(ratios: FacialRatios) -> list[dict]:
     calibration = _load_calibration()
-    result = {}
+    result = []
 
     for feature, field in RATIO_FIELD.items():
         if feature not in calibration:
@@ -42,6 +69,13 @@ def map_to_sliders(ratios: FacialRatios) -> dict:
 
         ratio_value = getattr(ratios, field)
         raw = float(np.interp(ratio_value, xs, ys))
-        result[feature] = max(SLIDER_MIN, min(SLIDER_MAX, round(raw)))
+        value = max(SLIDER_MIN, min(SLIDER_MAX, round(raw)))
+        meta = SLIDER_META[feature]
+        result.append({
+            "key": feature,
+            "label": meta["label"],
+            "description": meta["description"],
+            "value": value,
+        })
 
     return result

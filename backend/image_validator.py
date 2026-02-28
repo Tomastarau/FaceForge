@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from dataclasses import dataclass
+from ratio_calculator import FacialRatios, PITCH_MIN, PITCH_MAX
 
 BLUR_WEIGHT = 40
 LIGHTING_WEIGHT = 30
@@ -67,6 +68,18 @@ def validate_image(image_bytes: bytes) -> ValidationResult:
             "lighting": round(lighting_score, 1),
             "pose": round(pose_score, 1),
         },
+    )
+
+
+def validate_pitch(ratios: FacialRatios, score: int) -> ValidationResult:
+    if PITCH_MIN <= ratios.pitch_ratio <= PITCH_MAX:
+        return ValidationResult(score, True, "Pose validée.", {})
+    direction = "trop haute (regardez droit devant vous)" if ratios.pitch_ratio < PITCH_MIN else "trop basse"
+    return ValidationResult(
+        score=score,
+        valid=False,
+        message=f"Pose incorrecte : caméra {direction}. Placez l'appareil à hauteur des yeux.",
+        details={"pitch_ratio": ratios.pitch_ratio},
     )
 
 

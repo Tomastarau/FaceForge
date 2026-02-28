@@ -1,38 +1,41 @@
-const SLIDERS = [
-  { key: 'eye_spacing',  label: 'Eye Spacing'  },
-  { key: 'nose_width',   label: 'Nose Width'   },
-  { key: 'mouth_width',  label: 'Mouth Width'  },
-  { key: 'jaw_width',    label: 'Jaw Width'    },
-  { key: 'face_length',  label: 'Face Length'  },
-]
+import { useState } from 'react'
 
-const toPercent = (val) => Math.max(0, Math.min(100, ((val + 2) / 4) * 100))
+const toPercent = (val) => Math.max(0, Math.min(100, ((val + 100) / 200) * 100))
 
 export default function SliderResults({ results, filledResults, onReset }) {
+  const [openKey, setOpenKey] = useState(null)
+
+  const toggle = (key) => setOpenKey(prev => prev === key ? null : key)
+
   return (
     <section className="results-section">
       <div className="results-header">
         <p className="results-title">Character Sliders</p>
       </div>
       <div className="results-grid">
-        {SLIDERS.map(({ key, label }, i) => {
-          const val = results[key]
-          const pct = filledResults ? toPercent(filledResults[key]) : 0
+        {results.map(({ key, label, description, value }, i) => {
+          const pct = filledResults ? toPercent(filledResults[i].value) : 0
+          const isOpen = openKey === key
           return (
             <div className="slider-card" key={key} style={{ animationDelay: `${i * 75}ms` }}>
-              <span className="slider-label">{label}</span>
-              <div className="slider-track">
-                <div className="slider-fill" style={{ width: `${pct}%` }} />
-                <div className="slider-thumb" style={{ left: `${pct}%` }} />
+              <div className="slider-row" onClick={() => toggle(key)} style={{ cursor: 'pointer' }}>
+                <span className="slider-label">{label}</span>
+                <div className="slider-track">
+                  <div className="slider-fill" style={{ width: `${pct}%` }} />
+                  <div className="slider-thumb" style={{ left: `${pct}%` }} />
+                </div>
+                <span className="slider-value">
+                  {value >= 0 ? '+' : ''}{value}
+                </span>
               </div>
-              <span className="slider-value">
-                {val >= 0 ? '+' : ''}{val.toFixed(1)}
-              </span>
+              <div className={`slider-desc-wrapper${isOpen ? ' open' : ''}`}>
+                <p className="slider-description">{description}</p>
+              </div>
             </div>
           )
         })}
       </div>
-      <button className="btn-secondary" onClick={onReset}>New Portrait</button>
+      <button className="btn-secondary" onClick={onReset}>Nouveau portrait</button>
     </section>
   )
 }

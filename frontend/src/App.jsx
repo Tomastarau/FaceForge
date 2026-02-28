@@ -48,13 +48,7 @@ export default function App() {
       if (!res.ok || data.status === 'rejected') {
         throw new Error(data.message ?? 'Analysis failed')
       }
-      setResults({
-        eye_spacing:  1.2,
-        nose_width:  -0.4,
-        mouth_width:  0.7,
-        jaw_width:    0.3,
-        face_length: -0.2,
-      })
+      setResults(data.sliders)
       setPhase('results')
     } catch (err) {
       setError(err.message)
