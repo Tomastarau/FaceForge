@@ -1,0 +1,101 @@
+{
+  "eye_spacing": {
+    "anchors": [
+      {
+        "ratio": 0.7112,
+        "slider": -100,
+        "source": "ecartement des yeux minimum.png"
+      },
+      {
+        "ratio": 0.846,
+        "slider": 100,
+        "source": "ecartement des yeux maximum.png"
+      }
+    ]
+  },
+  "nose_width": {
+    "anchors": [
+      {
+        "ratio": 0.4491,
+        "slider": -100,
+        "source": "taille et largeur narines minimum.png"
+      },
+      {
+        "ratio": 0.4783,
+        "slider": 0,
+        "source": "nez par défaut.png"
+      },
+      {
+        "ratio": 0.5035,
+        "slider": 100,
+        "source": "taille et largeur narines max.png"
+      }
+    ]
+  },
+  "mouth_width": {
+    "anchors": [
+      {
+        "ratio": 0.4301,
+        "slider": -100,
+        "source": "largeur de la bouche minimum.png"
+      },
+      {
+        "ratio": 0.5637,
+        "slider": 14,
+        "source": "bouche par défaut.png"
+      },
+      {
+        "ratio": 0.6462,
+        "slider": 100,
+        "source": "largeur de la bouche maximum.png"
+      }
+    ]
+  },
+  "jaw_width": {
+    "anchors": [
+      {
+        "ratio": 1.2841,
+        "slider": -100,
+        "source": "largeur de la machoire minimum.png"
+      },
+      {
+        "ratio": 1.4002,
+        "slider": 100,
+        "source": "largeur de la machoire maximum.png"
+      }
+    ]
+  },
+  "face_length": {
+    "anchors": [
+      {
+        "ratio": 1.8219,
+        "slider": -100,
+        "source": "hauteur du menton minimum.png"
+      },
+      {
+        "ratio": 1.9647,
+        "slider": 100,
+        "source": "hauteur du menton maximum.png"
+      }
+    ]
+  },
+  "nose_length": {
+    "anchors": [
+      {
+        "ratio": 0.3309,
+        "slider": -100,
+        "source": "longueur du nez minimum.png"
+      },
+      {
+        "ratio": 0.3747,
+        "slider": 16,
+        "source": "nez par défaut.png"
+      },
+      {
+        "ratio": 0.3914,
+        "slider": 100,
+        "source": "longueur du nez maximum.png"
+      }
+    ]
+  }
+}
