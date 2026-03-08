@@ -25,19 +25,19 @@ def validate_image(image_bytes: bytes) -> ValidationResult:
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     if image is None:
-        return ValidationResult(0, False, "Impossible de décoder l'image.", {})
+        return ValidationResult(0, False, "Unable to decode the image.", {})
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = _face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(80, 80))
 
     if len(faces) == 0:
-        return ValidationResult(0, False, "Aucun visage détecté dans l'image.", {})
+        return ValidationResult(0, False, "No face detected in the image.", {})
 
     if len(faces) > 1:
         return ValidationResult(
             0,
             False,
-            "Plusieurs visages détectés. Envoyez une photo avec un seul visage.",
+            "Multiple faces detected. Please upload a photo with a single face.",
             {},
         )
 
@@ -49,13 +49,13 @@ def validate_image(image_bytes: bytes) -> ValidationResult:
     valid = total >= SCORE_THRESHOLD
 
     REJECTION_MESSAGE = (
-        "Visage invalide. Le visage doit : être net et bien mis au point, "
-        "avoir une exposition correcte (ni trop sombre ni surexposé), "
-        "et être de face avec les deux yeux visibles."
+        "Invalid image. The face must be: sharp and in focus, "
+        "correctly exposed (not too dark or overexposed), "
+        "and facing forward with both eyes visible."
     )
 
     if valid:
-        message = "Image validée."
+        message = "Image accepted."
     else:
         message = REJECTION_MESSAGE
 
@@ -73,12 +73,12 @@ def validate_image(image_bytes: bytes) -> ValidationResult:
 
 def validate_pitch(ratios: FacialRatios, score: int) -> ValidationResult:
     if PITCH_MIN <= ratios.pitch_ratio <= PITCH_MAX:
-        return ValidationResult(score, True, "Pose validée.", {})
-    direction = "trop haute (regardez droit devant vous)" if ratios.pitch_ratio < PITCH_MIN else "trop basse"
+        return ValidationResult(score, True, "Pose accepted.", {})
+    direction = "too high (look straight ahead)" if ratios.pitch_ratio < PITCH_MIN else "too low"
     return ValidationResult(
         score=score,
         valid=False,
-        message=f"Pose incorrecte : caméra {direction}. Placez l'appareil à hauteur des yeux.",
+        message=f"Incorrect pose: camera {direction}. Place the device at eye level.",
         details={"pitch_ratio": ratios.pitch_ratio},
     )
 
