@@ -1,0 +1,113 @@
+{
+  "eye_spacing": {
+    "anchors": [
+      { "ratio": 0.7112, "slider": -100 },
+      { "ratio": 0.846, "slider": 100 }
+    ]
+  },
+  "nose_width": {
+    "anchors": [
+      { "ratio": 0.4491, "slider": -100 },
+      { "ratio": 0.4783, "slider": 0 },
+      { "ratio": 0.5035, "slider": 100 }
+    ]
+  },
+  "mouth_width": {
+    "anchors": [
+      { "ratio": 0.4301, "slider": -100 },
+      { "ratio": 0.5637, "slider": 14 },
+      { "ratio": 0.6462, "slider": 100 }
+    ]
+  },
+  "jaw_width": {
+    "anchors": [
+      { "ratio": 1.2841, "slider": -100 },
+      { "ratio": 1.4002, "slider": 100 }
+    ]
+  },
+  "face_length": {
+    "anchors": [
+      { "ratio": 1.8219, "slider": -100 },
+      { "ratio": 1.9647, "slider": 100 }
+    ]
+  },
+  "nose_length": {
+    "anchors": [
+      { "ratio": 0.3309, "slider": -100 },
+      { "ratio": 0.3747, "slider": 16 },
+      { "ratio": 0.3914, "slider": 100 }
+    ]
+  },
+  "brow_spacing": {
+    "anchors": [
+      { "ratio": 0.2731, "slider": -100 },
+      { "ratio": 0.3063, "slider": 100 }
+    ]
+  },
+  "brow_height": {
+    "anchors": [
+      { "ratio": 0.0809, "slider": -100 },
+      { "ratio": 0.1239, "slider": 100 }
+    ]
+  },
+  "brow_angle": {
+    "anchors": [
+      { "ratio": 0.0888, "slider": -100 },
+      { "ratio": -0.0269, "slider": 100 }
+    ]
+  },
+  "brow_curve": {
+    "anchors": [
+      { "ratio": 0.1017, "slider": -100 },
+      { "ratio": 0.1274, "slider": 100 }
+    ]
+  },
+  "eye_size": {
+    "anchors": [
+      { "ratio": 0.0813, "slider": -100 },
+      { "ratio": 0.0976, "slider": 100 }
+    ]
+  },
+  "mouth_corner": {
+    "anchors": [
+      { "ratio": 0.0015, "slider": -100 },
+      { "ratio": 0.0406, "slider": 100 }
+    ]
+  },
+  "jaw_position": {
+    "anchors": [
+      { "ratio": 0.059, "slider": -100 },
+      { "ratio": 0.0142, "slider": 100 }
+    ]
+  },
+  "chin_width": {
+    "anchors": [
+      { "ratio": 5.5314, "slider": -100 },
+      { "ratio": 5.8095, "slider": 100 }
+    ]
+  },
+  "lip_thickness": {
+    "anchors": [
+      { "ratio": 0.1258, "slider": -100 },
+      { "ratio": 0.265, "slider": 100 }
+    ]
+  },
+  "eye_tilt": {
+    "anchors": [
+      { "ratio": -0.0593, "slider": -100 },
+      { "ratio": -0.0076, "slider": 100 }
+    ]
+  },
+  "eye_height": {
+    "anchors": [
+      { "ratio": 1.2467, "slider": -100 },
+      { "ratio": 1.2913, "slider": 100 }
+    ]
+  },
+  "mouth_height": {
+    "anchors": [
+      { "ratio": 1.452, "slider": -100 },
+      { "ratio": 1.2891, "slider": 100 }
+    ]
+  }
+}

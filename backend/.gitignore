@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+
+models/
+
+last_result.json
+
+calibrate.py
+debug_landmarks_viz.py
+
+.env
+*.env
