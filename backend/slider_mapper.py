@@ -31,76 +31,76 @@ RATIO_FIELD = {
 
 SLIDER_META = {
     "eye_spacing": {
-        "label": "Écartement des yeux",
-        "description": "Distance entre les coins internes des deux yeux, rapportée à la largeur totale entre coins externes. Un slider élevé signifie des yeux très espacés.",
+        "label": "Eye Spacing",
+        "description": "Distance between the inner corners of both eyes relative to the total outer-to-outer width. A high value means widely spaced eyes.",
     },
     "eye_size": {
-        "label": "Taille des yeux",
-        "description": "Ouverture verticale de l'œil entre la paupière supérieure et inférieure, normalisée par la largeur oculaire.",
+        "label": "Eye Size",
+        "description": "Vertical opening of the eye between the upper and lower eyelid, normalized by eye width.",
     },
     "nose_width": {
-        "label": "Largeur du nez",
-        "description": "Largeur des ailes du nez rapportée à la largeur oculaire. Mesurée aux points les plus externes des narines.",
+        "label": "Nose Width",
+        "description": "Width of the nostrils relative to eye width. Measured at the outermost points of the nose wings.",
     },
     "nose_length": {
-        "label": "Longueur du nez",
-        "description": "Distance entre la racine du nez (entre les yeux) et sa pointe, normalisée par la largeur oculaire.",
+        "label": "Nose Length",
+        "description": "Distance from the nose bridge (between the eyes) to the tip, normalized by eye width.",
     },
     "mouth_width": {
-        "label": "Largeur de la bouche",
-        "description": "Distance entre les deux commissures des lèvres, rapportée à la largeur oculaire.",
+        "label": "Mouth Width",
+        "description": "Distance between the two mouth corners, relative to eye width.",
     },
     "mouth_corner": {
-        "label": "Commissure des lèvres",
-        "description": "Position verticale des coins de la bouche par rapport au centre des lèvres. Positif = coins relevés.",
+        "label": "Mouth Corner",
+        "description": "Vertical position of the mouth corners relative to the lip center. Positive = corners lifted.",
     },
     "jaw_width": {
-        "label": "Largeur de la mâchoire",
-        "description": "Largeur du bas du visage au niveau de la mâchoire, normalisée par la largeur oculaire. Reflète la carrure du visage.",
+        "label": "Jaw Width",
+        "description": "Width of the lower face at jaw level, normalized by eye width. Reflects overall face squareness.",
     },
     "jaw_position": {
-        "label": "Position de la mâchoire",
-        "description": "Distance verticale entre les commissures et le bas de la mâchoire, normalisée par la largeur oculaire.",
+        "label": "Jaw Position",
+        "description": "Vertical distance between the mouth corners and the bottom of the jaw, normalized by eye width.",
     },
     "chin_width": {
-        "label": "Largeur du menton",
-        "description": "Rapport largeur/hauteur du menton — large et carré vs étroit et pointu. Calculé entre les points latéraux du menton et sa pointe.",
+        "label": "Chin Width",
+        "description": "Width-to-height ratio of the chin — wide and square vs narrow and pointed.",
     },
     "face_length": {
-        "label": "Hauteur du menton",
-        "description": "Hauteur totale du visage du haut du front jusqu'au menton, normalisée par la largeur oculaire. Correspond au slider hauteur du menton dans DD2.",
+        "label": "Face Length",
+        "description": "Total face height from the top of the forehead to the chin, normalized by eye width. Maps to the chin height slider in DD2.",
     },
     "brow_spacing": {
-        "label": "Écartement des sourcils",
-        "description": "Distance entre les coins internes des deux sourcils, normalisée par la largeur oculaire.",
+        "label": "Brow Spacing",
+        "description": "Distance between the inner corners of both eyebrows, normalized by eye width.",
     },
     "brow_height": {
-        "label": "Hauteur des sourcils",
-        "description": "Distance verticale entre la ligne des yeux et les sourcils. Plus la valeur est élevée, plus les sourcils sont hauts.",
+        "label": "Brow Height",
+        "description": "Vertical distance between the eye line and the eyebrows. Higher value means higher brows.",
     },
     "brow_angle": {
-        "label": "Angle des sourcils",
-        "description": "Pente du sourcil entre son coin interne et son coin externe. Positif = coin externe plus haut (sourcil relevé).",
+        "label": "Brow Angle",
+        "description": "Slope of the eyebrow from inner to outer corner. Positive = outer corner higher (raised brow).",
     },
     "brow_curve": {
-        "label": "Courbure des sourcils",
-        "description": "Hauteur de l'arche du sourcil au-dessus de la droite reliant son coin interne à son coin externe.",
+        "label": "Brow Curve",
+        "description": "Height of the eyebrow arch above the line connecting its inner and outer corners.",
     },
     "lip_thickness": {
-        "label": "Épaisseur des lèvres",
-        "description": "Hauteur verticale totale des lèvres (bord supérieur lèvre du haut → bord inférieur lèvre du bas), normalisée par la largeur oculaire.",
+        "label": "Lip Thickness",
+        "description": "Total vertical height of the lips from the upper edge to the lower edge, normalized by eye width.",
     },
     "eye_tilt": {
-        "label": "Angle des yeux",
-        "description": "Angle des yeux entre le coin interne et externe. Négatif = coin externe plus haut (yeux de chat). Positif = coin externe plus bas (yeux tombants).",
+        "label": "Eye Tilt",
+        "description": "Angle of the eye between inner and outer corners. Negative = outer corner higher (cat eyes). Positive = outer corner lower (drooping eyes).",
     },
     "eye_height": {
-        "label": "Hauteur des yeux",
-        "description": "Position verticale des yeux sur le visage, depuis le sommet du crâne, normalisée par la largeur oculaire.",
+        "label": "Eye Height",
+        "description": "Vertical position of the eyes on the face from the top of the skull, normalized by eye width.",
     },
     "mouth_height": {
-        "label": "Hauteur de la bouche",
-        "description": "Position verticale de la bouche sur le visage, depuis le sommet du crâne, normalisée par la largeur oculaire.",
+        "label": "Mouth Height",
+        "description": "Vertical position of the mouth on the face from the top of the skull, normalized by eye width.",
     },
 }
 
