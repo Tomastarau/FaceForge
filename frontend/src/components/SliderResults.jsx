@@ -35,7 +35,7 @@ export default function SliderResults({ results, filledResults, onReset }) {
           )
         })}
       </div>
-      <button className="btn-secondary" onClick={onReset}>Nouveau portrait</button>
+      <button className="btn-secondary" onClick={onReset}>New portrait</button>
     </section>
   )
 }
