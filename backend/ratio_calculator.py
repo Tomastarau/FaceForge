@@ -27,8 +27,8 @@ def _get_landmarker():
         _landmarker = FaceLandmarker.create_from_options(options)
     return _landmarker
 
-PITCH_MIN = 0.30
-PITCH_MAX = 0.55
+PITCH_MIN = 0.28
+PITCH_MAX = 0.58
 
 @dataclass
 class FacialRatios:
