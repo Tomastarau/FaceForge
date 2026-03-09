@@ -3,6 +3,8 @@ import { useRef, useEffect } from 'react'
 export default function CameraCapture({ onCapture, onCancel, onError }) {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
+  const onErrorRef = useRef(onError)
+  onErrorRef.current = onError
 
   useEffect(() => {
     let cancelled = false
@@ -17,7 +19,7 @@ export default function CameraCapture({ onCapture, onCancel, onError }) {
         streamRef.current = stream
         videoRef.current.srcObject = stream
       })
-      .catch(() => onError?.('Camera access denied or unavailable.'))
+      .catch(() => onErrorRef.current?.('Camera access denied or unavailable.'))
 
     return () => {
       cancelled = true

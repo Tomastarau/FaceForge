@@ -3,9 +3,11 @@ import './App.css'
 import DropZone from './components/DropZone'
 import CameraCapture from './components/CameraCapture'
 import SliderResults from './components/SliderResults'
+import About from './components/About'
 
 export default function App() {
   const [phase, setPhase] = useState('idle')
+  const [prevPhase, setPrevPhase] = useState(null)
   const [file, setFile] = useState(null)
   const [preview, setPreview] = useState(null)
   const [results, setResults] = useState(null)
@@ -24,6 +26,7 @@ export default function App() {
   }, [results])
 
   const handleFile = (f) => {
+    if (preview) URL.revokeObjectURL(preview)
     setFile(f)
     setPreview(URL.createObjectURL(f))
     setPhase('preview')
@@ -32,6 +35,7 @@ export default function App() {
   }
 
   const handleCapture = (blob) => {
+    if (preview) URL.revokeObjectURL(preview)
     setFile(blob)
     setPreview(URL.createObjectURL(blob))
     setPhase('preview')
@@ -74,12 +78,21 @@ export default function App() {
     setPhase('error')
   }
 
+  const handleAbout = () => { setPrevPhase(phase); setPhase('about') }
+  const handleAboutBack = () => { setPhase(prevPhase ?? 'idle'); setPrevPhase(null) }
+
   return (
     <div className="forge">
       <header className="forge-header">
         <div className="rune-line" />
         <h1 className="forge-title">FACEFORGE</h1>
         <p className="forge-subtitle">Dragon's Dogma II — Character Imprinter</p>
+        <nav className="forge-nav">
+          {phase === 'about'
+            ? <button className="nav-link" onClick={handleAboutBack}>← Back</button>
+            : <button className="nav-link" onClick={handleAbout}>About</button>
+          }
+        </nav>
         <div className="rune-line" />
       </header>
 
@@ -129,6 +142,8 @@ export default function App() {
             <button className="btn-secondary" onClick={handleReset}>Retry</button>
           </div>
         )}
+
+        {phase === 'about' && <About />}
 
       </main>
 
