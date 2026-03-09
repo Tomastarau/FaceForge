@@ -1,13 +1,19 @@
-import json, os
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, Request, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from image_validator import validate_image, validate_pitch
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from image_validator import validate_image, score_quality, score_pitch
 from ratio_calculator import extract_ratios
 from slider_mapper import map_to_sliders
 
-RESULT_PATH = os.path.join(os.path.dirname(__file__), "last_result.json")
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024  # 10 MB
 
 app = FastAPI()
+
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,32 +24,32 @@ app.add_middleware(
 
 
 @app.post("/upload")
-async def upload_image(file: UploadFile = File(...)):
-    contents = await file.read()
-    result = validate_image(contents)
+@limiter.limit("50/minute")
+async def upload_image(request: Request, file: UploadFile = File(...)):
+    contents = await file.read(MAX_UPLOAD_BYTES + 1)
+    if len(contents) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="File too large. Maximum size is 10 MB.")
 
-    if not result.valid:
-        return {
-            "status": "rejected",
-            "score": result.score,
-            "message": result.message,
-            "details": result.details,
-        }
+    gate = validate_image(contents)
+    if not gate.valid:
+        return {"status": "rejected", "score": 0, "message": gate.message, "details": {}}
 
     ratios = extract_ratios(contents)
     if ratios is None:
         raise HTTPException(status_code=500, detail="Landmark extraction failed.")
 
-    pitch = validate_pitch(ratios, result.score)
-    if not pitch.valid:
-        return {"status": "rejected", "score": pitch.score, "message": pitch.message, "details": pitch.details}
+    score, quality_warning, rejection = score_quality(gate.gray, gate.face_rect)
+    if rejection:
+        return {"status": "rejected", "score": score, "message": rejection, "details": {}}
 
+    pitch_warning = score_pitch(ratios)
+    warning = pitch_warning or quality_warning
     sliders = map_to_sliders(ratios)
 
     response = {
         "status": "ok",
-        "score": result.score,
-        "message": result.message,
+        "score": score,
+        "message": warning or "Image accepted.",
         "sliders": sliders,
         "ratios": {
             "eye_spacing_ratio": ratios.eye_spacing_ratio,
@@ -53,8 +59,5 @@ async def upload_image(file: UploadFile = File(...)):
             "face_length_ratio": ratios.face_length_ratio,
         },
     }
-
-    with open(RESULT_PATH, "w") as f:
-        json.dump(response, f, indent=2)
 
     return response
