@@ -208,12 +208,6 @@
   color: var(--gold);
 }
 
-.divider-dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--border-glow);
-}
 
 /* ── Action row ── */
 
@@ -526,6 +520,61 @@
   letter-spacing: 0.06em;
   color: var(--gold);
 }
+
+/* ── Nav ── */
+
+.forge-nav { display: flex; justify-content: center; }
+
+.nav-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-link:hover { color: var(--gold); }
+
+/* ── About ── */
+
+.about-section { width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.about-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.about-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.4rem;
+  list-style: decimal;
+}
+
+.about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-left: 1.4rem;
+  list-style: disc;
+}
+
+.about-steps li,
+.about-list li { font-size: 1rem; color: var(--text); line-height: 1.6; }
+
+.about-steps li strong,
+.about-list li strong { color: var(--gold-bright); font-weight: 600; }
+
+.about-body { font-size: 1rem; color: var(--text); line-height: 1.7; }
 
 /* ── Footer ── */
 

@@ -21,6 +21,8 @@ class GateResult:
 
 
 MAX_DETECTION_SIZE = 1536
+MAX_IMAGE_DIMENSION = 8000
+MAX_IMAGE_PIXELS = 40_000_000
 
 def validate_image(image_bytes: bytes) -> GateResult:
     nparr = np.frombuffer(image_bytes, np.uint8)
@@ -28,6 +30,10 @@ def validate_image(image_bytes: bytes) -> GateResult:
 
     if image is None:
         return GateResult(False, "Unable to decode the image.")
+
+    h, w = image.shape[:2]
+    if max(h, w) > MAX_IMAGE_DIMENSION or h * w > MAX_IMAGE_PIXELS:
+        return GateResult(False, "Image dimensions too large.")
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
