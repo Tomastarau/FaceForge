@@ -520,6 +520,13 @@
   color: var(--text-muted);
 }
 
+.warning-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+
 /* ── Footer ── */
 
 .forge-footer {

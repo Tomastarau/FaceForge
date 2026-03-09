@@ -1,7 +1,7 @@
 import json, os
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from image_validator import validate_image, validate_pitch
+from image_validator import validate_image, score_quality, score_pitch
 from ratio_calculator import extract_ratios
 from slider_mapper import map_to_sliders
 
@@ -20,30 +20,27 @@ app.add_middleware(
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
     contents = await file.read()
-    result = validate_image(contents)
 
-    if not result.valid:
-        return {
-            "status": "rejected",
-            "score": result.score,
-            "message": result.message,
-            "details": result.details,
-        }
+    gate = validate_image(contents)
+    if not gate.valid:
+        return {"status": "rejected", "score": 0, "message": gate.message, "details": {}}
 
     ratios = extract_ratios(contents)
     if ratios is None:
         raise HTTPException(status_code=500, detail="Landmark extraction failed.")
 
-    pitch = validate_pitch(ratios, result.score)
-    if not pitch.valid:
-        return {"status": "rejected", "score": pitch.score, "message": pitch.message, "details": pitch.details}
+    score, quality_warning, rejection = score_quality(gate.gray, gate.face_rect)
+    if rejection:
+        return {"status": "rejected", "score": score, "message": rejection, "details": {}}
 
+    pitch_warning = score_pitch(ratios)
+    warning = pitch_warning or quality_warning
     sliders = map_to_sliders(ratios)
 
     response = {
         "status": "ok",
-        "score": result.score,
-        "message": result.message,
+        "score": score,
+        "message": warning or "Image accepted.",
         "sliders": sliders,
         "ratios": {
             "eye_spacing_ratio": ratios.eye_spacing_ratio,

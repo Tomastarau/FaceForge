@@ -12,6 +12,7 @@ export default function App() {
   const [filledResults, setFilledResults] = useState(null)
   const [error, setError] = useState(null)
   const [score, setScore] = useState(null)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     if (results) {
@@ -49,6 +50,7 @@ export default function App() {
         throw new Error(data.message ?? 'Analysis failed')
       }
       setResults(data.sliders)
+      setMessage(data.message !== 'Image accepted.' ? data.message : null)
       setPhase('results')
     } catch (err) {
       setError(err.message)
@@ -64,6 +66,7 @@ export default function App() {
     setResults(null)
     setError(null)
     setScore(null)
+    setMessage(null)
   }
 
   const handleCameraError = (msg) => {
@@ -110,6 +113,7 @@ export default function App() {
         {phase === 'results' && results && (
           <>
             {score !== null && <p className="score-text">Image quality score: {score}/100</p>}
+            {message && <p className="warning-text">⚠ {message}</p>}
             <SliderResults
               results={results}
               filledResults={filledResults}

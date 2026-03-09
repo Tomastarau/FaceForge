@@ -8,6 +8,7 @@ last_result.json
 
 calibrate.py
 debug_landmarks_viz.py
+local_test.py
 
 .env
 *.env

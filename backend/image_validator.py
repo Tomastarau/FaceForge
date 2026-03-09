@@ -13,74 +13,71 @@ _eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xm
 
 
 @dataclass
-class ValidationResult:
-    score: int
+class GateResult:
     valid: bool
-    message: str
-    details: dict
+    message: str = ""
+    gray: np.ndarray | None = None
+    face_rect: tuple | None = None
 
 
-def validate_image(image_bytes: bytes) -> ValidationResult:
+MAX_DETECTION_SIZE = 1536
+
+def validate_image(image_bytes: bytes) -> GateResult:
     nparr = np.frombuffer(image_bytes, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     if image is None:
-        return ValidationResult(0, False, "Unable to decode the image.", {})
+        return GateResult(False, "Unable to decode the image.")
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faces = _face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(80, 80))
+
+    h, w = gray.shape
+    if max(h, w) > MAX_DETECTION_SIZE:
+        scale = MAX_DETECTION_SIZE / max(h, w)
+        detect_gray = cv2.resize(gray, (int(w * scale), int(h * scale)))
+    else:
+        scale = 1.0
+        detect_gray = gray
+
+    faces = _face_cascade.detectMultiScale(detect_gray, scaleFactor=1.1, minNeighbors=5, minSize=(80, 80))
 
     if len(faces) == 0:
-        return ValidationResult(0, False, "No face detected in the image.", {})
+        return GateResult(False, "No face detected in the image.")
 
     if len(faces) > 1:
-        return ValidationResult(
-            0,
-            False,
-            "Multiple faces detected. Please upload a photo with a single face.",
-            {},
-        )
+        return GateResult(False, "Multiple faces detected. Please upload a photo with a single face.")
 
-    blur_score = _score_blur(gray)
-    lighting_score = _score_lighting(gray)
-    pose_score = _score_pose(gray, faces[0])
+    x, y, fw, fh = faces[0]
+    face_rect = (int(x / scale), int(y / scale), int(fw / scale), int(fh / scale))
+    return GateResult(True, gray=gray, face_rect=face_rect)
 
-    total = int(blur_score + lighting_score + pose_score)
-    valid = total >= SCORE_THRESHOLD
 
-    REJECTION_MESSAGE = (
-        "Invalid image. The face must be: sharp and in focus, "
-        "correctly exposed (not too dark or overexposed), "
-        "and facing forward with both eyes visible."
+BLUR_REJECT_THRESHOLD = 5
+
+def score_quality(gray: np.ndarray, face_rect: tuple) -> tuple[int, str | None, str | None]:
+    x, y, fw, fh = face_rect
+    face_crop = gray[y:y + fh, x:x + fw]
+    blur = _score_blur(face_crop)
+    lighting = _score_lighting(gray)
+    pose = _score_pose(gray, face_rect)
+    score = int(blur + lighting + pose)
+
+    if blur < BLUR_REJECT_THRESHOLD:
+        return score, None, "Image too blurry to process. Please use a sharper photo."
+
+    warning = (
+        "Low quality image, results may be inaccurate. For best results: use a sharp, "
+        "well-lit, front-facing photo with both eyes visible."
+        if score < SCORE_THRESHOLD else None
     )
-
-    if valid:
-        message = "Image accepted."
-    else:
-        message = REJECTION_MESSAGE
-
-    return ValidationResult(
-        score=total,
-        valid=valid,
-        message=message,
-        details={
-            "blur": round(blur_score, 1),
-            "lighting": round(lighting_score, 1),
-            "pose": round(pose_score, 1),
-        },
-    )
+    return score, warning, None
 
 
-def validate_pitch(ratios: FacialRatios, score: int) -> ValidationResult:
+def score_pitch(ratios: FacialRatios) -> str | None:
     if PITCH_MIN <= ratios.pitch_ratio <= PITCH_MAX:
-        return ValidationResult(score, True, "Pose accepted.", {})
+        return None
     direction = "too high (look straight ahead)" if ratios.pitch_ratio < PITCH_MIN else "too low"
-    return ValidationResult(
-        score=score,
-        valid=False,
-        message=f"Incorrect pose: camera {direction}. Place the device at eye level.",
-        details={"pitch_ratio": ratios.pitch_ratio},
-    )
+    return f"Camera angle {direction}, results may be less accurate."
 
 
 def _score_blur(gray) -> float:

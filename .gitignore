@@ -1,9 +1,11 @@
-# Images de test et debug
+# Test images
 *.jpeg
 *.jpg
 *.png
 landmarks_debug.*
 dogma*/
+not_valid_image*/
+valid_images*/
 
 # Allow assets
 !assets/*.png
